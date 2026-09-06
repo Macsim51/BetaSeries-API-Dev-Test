@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explorateur local et open source pour tester l’API BetaSeries." />
+    <meta name="theme-color" content="#126a62" />
+    <title>Explorateur API BetaSeries</title>
+    <link rel="stylesheet" href="/styles.css?v=1.0.0" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">BS</span>
+        <div>
+          <h1>BetaSeries API</h1>
+          <p>Explorateur local</p>
+        </div>
+      </div>
+
+      <section class="panel auth-panel" aria-labelledby="auth-title">
+        <div class="panel-heading">
+          <h2 id="auth-title">Authentification</h2>
+          <span id="authStatus" class="status-pill">Chargement</span>
+        </div>
+
+        <label>
+          API key
+          <input id="apiKeyInput" type="password" autocomplete="off" placeholder="Depuis .env ou cette session" />
+        </label>
+
+        <label>
+          Client secret OAuth
+          <input id="clientSecretInput" type="password" autocomplete="off" placeholder="Depuis .env ou cette session" />
+        </label>
+
+        <label>
+          Access token
+          <textarea id="tokenInput" rows="3" spellcheck="false" autocomplete="off" placeholder="Jeton OAuth obtenu ou collé ici"></textarea>
+        </label>
+
+        <div class="button-row">
+          <button id="saveCredentialsBtn" type="button">Garder pour l’onglet</button>
+          <button id="clearCredentialsBtn" type="button" class="secondary">Effacer</button>
+        </div>
+
+        <p class="security-note">Les secrets saisis sont supprimés à la fermeture de l’onglet. Préfère le fichier <code>.env</code> sur un ordinateur de confiance.</p>
+
+        <div class="oauth-actions">
+          <button id="startOAuthBtn" type="button">OAuth navigateur</button>
+          <button id="startDeviceBtn" type="button" class="secondary">OAuth appareil</button>
+        </div>
+
+        <div id="deviceBox" class="device-box hidden">
+          <div>
+            <span class="muted">Code</span>
+            <strong id="deviceCode">...</strong>
+          </div>
+          <a id="deviceLink" href="#" target="_blank" rel="noreferrer">Ouvrir la page</a>
+          <button id="pollDeviceBtn" type="button">Vérifier le jeton</button>
+        </div>
+      </section>
+
+      <section class="panel sources-panel" aria-labelledby="sources-title">
+        <h2 id="sources-title">Docs</h2>
+        <a href="https://developers.betaseries.com/docs/getting-started/making-requests/#field-parameter" target="_blank" rel="noreferrer">Requêtes et champs</a>
+        <a href="https://developers.betaseries.com/docs/category/api/" target="_blank" rel="noreferrer">Référence API</a>
+      </section>
+    </aside>
+
+    <main class="workspace">
+      <section class="request-shell">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Exploration</p>
+            <h2>Choisir un endpoint</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button id="copyCurlBtn" type="button" class="secondary">Copier cURL sans secrets</button>
+            <button id="sendBtn" type="button">Envoyer</button>
+          </div>
+        </div>
+
+        <div class="endpoint-layout">
+          <section class="endpoint-picker" aria-label="Liste des endpoints">
+            <input id="endpointSearch" class="search-input" type="search" placeholder="Filtrer : shows, members, search…" />
+            <div id="endpointList" class="endpoint-list"></div>
+          </section>
+
+          <section class="request-panel" aria-label="Configuration de la requete">
+            <div class="request-line">
+              <select id="methodSelect" aria-label="Méthode HTTP">
+                <option>GET</option>
+                <option>POST</option>
+                <option>DELETE</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+              </select>
+              <input id="pathInput" type="text" spellcheck="false" placeholder="/shows/display" />
+            </div>
+
+            <div id="endpointMeta" class="endpoint-meta"></div>
+
+            <div class="tabs compact-tabs" role="tablist" aria-label="Paramètres">
+              <button id="queryTab" type="button" role="tab" class="active" aria-selected="true" aria-controls="queryParams">Query</button>
+              <button id="bodyTab" type="button" role="tab" aria-selected="false" aria-controls="bodyParams" disabled>Body</button>
+            </div>
+
+            <div id="queryParams" class="params-grid"></div>
+            <div id="bodyParams" class="params-grid hidden"></div>
+            <p id="bodyEmptyState" class="param-empty-state hidden">
+              Aucun champ Body n’est défini pour cet endpoint. Tu peux en ajouter un manuellement si nécessaire.
+            </p>
+
+            <div id="bodyModeRow" class="body-mode-row hidden">
+              <span>Mode d’envoi</span>
+              <label><input type="radio" name="bodyMode" value="query" checked /> URL (query)</label>
+              <label><input type="radio" name="bodyMode" value="form" /> formulaire</label>
+              <label><input type="radio" name="bodyMode" value="json" /> JSON</label>
+            </div>
+
+            <button id="addParamBtn" type="button" class="secondary">Ajouter un paramètre libre</button>
+          </section>
+        </div>
+      </section>
+
+      <section class="response-shell">
+        <div class="response-header">
+          <div>
+            <p class="eyebrow">Retour API</p>
+            <h2 id="responseTitle">Aucune requête envoyée</h2>
+          </div>
+          <div class="response-actions">
+            <div id="responseStats" class="response-stats"></div>
+            <button id="maximizeResultBtn" type="button" class="secondary">Maximiser</button>
+          </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Résultats">
+          <button id="jsonViewBtn" type="button" role="tab" class="active" aria-selected="true" aria-controls="jsonView">JSON</button>
+          <button id="treeViewBtn" type="button" role="tab" aria-selected="false" aria-controls="treeView">Arbre</button>
+          <button id="historyViewBtn" type="button" role="tab" aria-selected="false" aria-controls="historyView">Historique</button>
+        </div>
+
+        <div id="jsonView" class="result-view">
+          <div id="jsonOutput" class="json-output">Sélectionne un endpoint, remplis les paramètres, puis envoie la requête.</div>
+        </div>
+
+        <div id="treeView" class="result-view hidden">
+          <div id="treeSummary" class="summary-grid"></div>
+          <div id="treeOutput" class="tree-output"></div>
+        </div>
+
+        <div id="historyView" class="result-view hidden">
+          <div id="historyOutput" class="history-output"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/app.js?v=1.0.0" type="module"></script>
+  </body>
+</html>

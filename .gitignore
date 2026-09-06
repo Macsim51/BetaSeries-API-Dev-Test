@@ -1,0 +1,16 @@
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Dépendances, rapports et journaux
+node_modules/
+coverage/
+*.log
+npm-debug.log*
+
+# Système et éditeurs
+.DS_Store
+.idea/
+.vscode/
+*.swp
