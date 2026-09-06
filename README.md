@@ -8,6 +8,10 @@ Une interface web locale pour découvrir, configurer et tester les endpoints de 
 
 > Ce projet communautaire n’est ni développé, ni approuvé par BetaSeries. Respectez les [conditions d’utilisation de l’API BetaSeries](https://developers.betaseries.com/).
 
+## Aperçu
+
+![Interface de l’Explorateur API BetaSeries](docs/interface.png)
+
 ## Fonctionnalités
 
 - catalogue d’endpoints actualisé depuis la documentation BetaSeries ;
