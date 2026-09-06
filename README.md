@@ -119,4 +119,4 @@ Les contributions sont bienvenues. Lisez [CONTRIBUTING.md](CONTRIBUTING.md) avan
 
 ## Licence
 
-Le code est distribué sous [licence MIT](LICENSE). Vous pouvez l’utiliser, le modifier et le redistribuer en conservant la notice de licence.
+Projet créé par [Macsim51](https://github.com/Macsim51) et distribué sous [licence MIT](LICENSE). Vous pouvez l’utiliser, le modifier et le redistribuer à condition de conserver la mention de copyright originale ainsi que le texte de la licence.
