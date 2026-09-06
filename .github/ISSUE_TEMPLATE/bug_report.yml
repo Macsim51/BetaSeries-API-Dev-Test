@@ -1,0 +1,38 @@
+name: Signaler un bug
+description: Décrire un comportement incorrect et reproductible
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Merci de ne jamais inclure de clé API, secret ou jeton OAuth.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Que s’est-il passé et quel comportement attendiez-vous ?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      placeholder: |
+        1. Ouvrir…
+        2. Sélectionner…
+        3. Constater…
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Version de Node.js
+      placeholder: "20.x"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navigateur et version
+    validations:
+      required: true

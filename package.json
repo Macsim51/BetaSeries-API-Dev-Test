@@ -1,0 +1,30 @@
+{
+  "name": "betaseries-api-dashboard",
+  "version": "1.0.0",
+  "description": "Explorateur web local et sécurisé pour l’API BetaSeries.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check server.js && node --check public/app.js && node --test",
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Macsim51/BetaSeries-API-Dev-Test.git"
+  },
+  "homepage": "https://github.com/Macsim51/BetaSeries-API-Dev-Test#readme",
+  "bugs": "https://github.com/Macsim51/BetaSeries-API-Dev-Test/issues",
+  "keywords": [
+    "betaseries",
+    "api",
+    "oauth",
+    "dashboard",
+    "developer-tools"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  }
+}
