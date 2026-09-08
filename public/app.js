@@ -1,4 +1,5 @@
 import { DEFAULT_ENDPOINTS } from "./endpoints.js";
+import { isOAuthCallbackStateValid } from "./oauth-state.js";
 
 let ENDPOINTS = structuredClone(DEFAULT_ENDPOINTS);
 const state = {
@@ -265,7 +266,7 @@ function handleOAuthCallback() {
     showToast(`Autorisation refusée : ${oauthError}`);
     return;
   }
-  if (!expectedState || receivedState !== expectedState) {
+  if (!isOAuthCallbackStateValid(expectedState, receivedState)) {
     showToast("Réponse OAuth refusée : état de sécurité invalide.");
     return;
   }
